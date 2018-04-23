@@ -5,7 +5,7 @@ import java.util.Objects;
 import javax.json.Json;
 import javax.json.JsonValue;
 
-import org.codegas.commons.ende.api.JsonValueDecoder;
+import org.codegas.commons.ende.json.JsonValueDecoder;
 
 public final class GeoPoint {
 
@@ -76,7 +76,7 @@ public final class GeoPoint {
             return JsonValueDecoder.asObject()
                 .andThen(geoPointObject -> new GeoPoint(geoPointObject.getJsonNumber("lat").doubleValue(),
                     geoPointObject.getJsonNumber("lng").doubleValue()))
-                .applyNullSafe(jsonValue);
+                .apply(jsonValue);
         }
 
         protected JsonValue toValue(GeoPoint geoPoint) {

@@ -5,7 +5,7 @@ import java.util.Objects;
 import javax.json.Json;
 import javax.json.JsonValue;
 
-import org.codegas.commons.ende.api.JsonValueDecoder;
+import org.codegas.commons.ende.json.JsonValueDecoder;
 
 public final class IdName {
 
