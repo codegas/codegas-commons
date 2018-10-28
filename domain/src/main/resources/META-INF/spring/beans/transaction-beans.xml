@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/aop
+                           http://www.springframework.org/schema/aop/spring-aop.xsd
+                           http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/tx
+                           http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+    <!-- Configure and tell Spring which Transaction Manager to use -->
+    <bean id="platformTransactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name="entityManagerFactory" ref="entityManagerFactory"/>
+    </bean>
+
+    <!-- Configure Transaction Template for manual Transactions -->
+    <bean id="transactionTemplate" class="org.springframework.transaction.support.TransactionTemplate">
+        <property name="transactionManager" ref="platformTransactionManager"/>
+    </bean>
+
+    <!-- AOP Advice for Transactional Beans -->
+    <tx:advice id="transactionalAdvice" transaction-manager="platformTransactionManager">
+        <tx:attributes>
+            <tx:method name="*"/>
+        </tx:attributes>
+    </tx:advice>
+
+    <!-- How to identify Transactional Beans -->
+    <aop:config>
+        <aop:pointcut id="transactional" expression="@annotation(org.codegas.commons.lang.annotation.Transactional) || @within(org.codegas.commons.lang.annotation.Transactional)"/>
+        <aop:advisor advice-ref="transactionalAdvice" pointcut-ref="transactional"/>
+    </aop:config>
+</beans>
